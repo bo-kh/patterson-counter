@@ -8,19 +8,20 @@
   import Button from './components/Button.svelte';
   import Input from './components/Input.svelte';
   import Em from './components/Em.svelte';
-  import { Events } from './events/events.js';
-  import PlayersProvider from './stores/playersProvider.js';
+  import { Events } from './events/events';
+  import { createPlayerProvider } from './stores/playersProvider';
   
   const dispatch = createEventDispatcher();
 
-  let playersProvider = new PlayersProvider();
-  let players = [];
+  let playersProvider = createPlayerProvider();
+  let players = playersProvider.players;
   let playerName = '';
   let playerAlreadyExists = false;
 
   $: playerAlreadyExists = playersProvider.isNameExists(playerName);
 
   function handleClickCalculate() {
+    dispatch(Events.nextPage);
   }
 
   function handleClickBack() {
@@ -47,7 +48,7 @@
 <PageMainLayout>
   <PageHeader>
     <h1 class="text-4xl text-orange-700">Add players</h1>
-    <p class="text-orange-900 mt-4 px-5">Add players by typing their names and clicking <Em>Add player</Em>. The maximum amount of players is 6.</p>
+    <p class="text-orange-900 mt-4 px-5">Add players by typing their names and clicking <Em>Add player</Em>. The minimum amount of players is 2 and maximum is 6.</p>
   </PageHeader>
   <ContentLayout>
     <div class="flex mt-8">
@@ -67,7 +68,7 @@
     </div>
   </ContentLayout>
   <PageFooter>
-    <Button text="Reset" secondary on:click={handleClickBack}/>
-    <Button text="Calculate points" on:click={handleClickCalculate} />
+    <Button text="Back" secondary on:click={handleClickBack}/>
+    <Button text="Calculate points" on:click={handleClickCalculate} disabled={players.length < 2} />
   </PageFooter>
 </PageMainLayout>

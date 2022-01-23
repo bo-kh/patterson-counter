@@ -16,4 +16,31 @@ body {
   width: 100%;
   height: 100%;
   background-color: #333;
+  overflow: hidden;
+}
+
+.g-cols-2 {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+.g-cols-3 {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+.g-cols-4 {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+.g-cols-5 {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+.g-cols-6 {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: #aaa; /* or add it to the track */
+}
+
+*::-webkit-scrollbar-thumb {
+    background: #777;
 }

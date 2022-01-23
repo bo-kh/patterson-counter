@@ -1,30 +1,33 @@
-import Player from './models/player.js';
-import { getNextId } from './playerIdProvider.js';
+import { writable, get } from 'svelte/store';
+import Player from './models/player';
+import { getNextId } from './playerIdProvider';
 
-export default class PlayersProvider {
-  /**
-   * @type {Player[]}
-   * @private
-   */
-  #players = [];
+const players = writable([]);
 
+class PlayersProvider {
   /**
    * @param {string} playerName
    */
   add(playerName) {
-    this.#players.push(new Player(getNextId(), playerName.trim()));
-    return [...this.#players];
+    players.update(p => [...p, new Player(getNextId(), playerName.trim())]);
+    return [...get(players)];
   }
 
   /**
    * @param {number} playerId 
    */
   remove(playerId) {
-    const index = this.#players.findIndex(item => item.id === playerId);
+    const p = get(players);
+    const index = p.findIndex(item => item.id === playerId);
     if (index >= 0) {
-      this.#players.splice(index, 1);
+      p.splice(index, 1);
+      players.update(() => [...p]);
     }
-    return [...this.#players];
+    return [...get(players)];
+  }
+
+  reset() {
+    players.update(p => []);
   }
 
   /**
@@ -32,6 +35,13 @@ export default class PlayersProvider {
    */
   isNameExists(playerName) {
     const desiredValue = playerName.trim().toLowerCase();
-    return this.#players.findIndex(item => item.name.toLowerCase() === desiredValue) >= 0;
+    const p = get(players);
+    return p.findIndex(item => item.name.toLowerCase() === desiredValue) >= 0;
+  }
+
+  get players() {
+    return [...get(players)];
   }
 }
+
+export const createPlayerProvider = () => new PlayersProvider();

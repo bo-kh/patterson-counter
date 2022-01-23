@@ -7,7 +7,7 @@
   import PageFooter from './components/PageFooter.svelte';
   import Button from './components/Button.svelte';
   import Em from './components/Em.svelte';
-  import { Events } from './events/events.js';
+  import { Events } from './events/events';
 
   const dispatch = createEventDispatcher();
 
